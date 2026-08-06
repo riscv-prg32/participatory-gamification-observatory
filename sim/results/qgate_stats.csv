@@ -1,0 +1,5 @@
+scenario,pass_pct,short_pct,skew_pct,outlier_pct
+Small lab,80.8,15.0,2.6,1.7
+Medium lecture,80.8,15.0,2.6,1.6
+Large lecture,80.8,15.0,2.6,1.6
+Open MOOC,57.0,40.0,1.8,1.2

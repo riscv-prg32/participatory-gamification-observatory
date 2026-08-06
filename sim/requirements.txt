@@ -1,0 +1,6 @@
+# PRG32 Gamification Observatory – simulation dependencies
+# Tested with Python 3.12.3
+# Install with: pip install -r requirements.txt
+
+numpy==2.4.4
+matplotlib==3.10.8
