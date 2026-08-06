@@ -1,13 +1,13 @@
 scenario,semester,median_k,p10_k,p90_k
-Small lab,1,0.937,0.898,0.975
-Small lab,2,1.873,1.819,1.93
-Small lab,3,2.809,2.747,2.877
-Medium lecture,1,1.824,1.769,1.879
-Medium lecture,2,3.644,3.571,3.726
-Medium lecture,3,5.474,5.375,5.564
-Large lecture,1,3.591,3.508,3.668
-Large lecture,2,7.183,7.075,7.293
-Large lecture,3,10.768,10.647,10.915
-Open MOOC,1,5.422,5.334,5.52
-Open MOOC,2,10.858,10.711,10.99
-Open MOOC,3,16.292,16.122,16.452
+Small lab,1,0.9,0.9,1.0
+Small lab,2,1.9,1.8,1.9
+Small lab,3,2.8,2.7,2.9
+Medium lecture,1,1.8,1.8,1.9
+Medium lecture,2,3.6,3.6,3.7
+Medium lecture,3,5.5,5.4,5.6
+Large lecture,1,3.6,3.5,3.7
+Large lecture,2,7.2,7.1,7.3
+Large lecture,3,10.8,10.6,10.9
+Open MOOC,1,5.4,5.3,5.5
+Open MOOC,2,10.9,10.7,11.0
+Open MOOC,3,16.3,16.1,16.5
