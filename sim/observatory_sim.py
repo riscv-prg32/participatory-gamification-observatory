@@ -121,9 +121,9 @@ for s_idx, (label, *_) in enumerate(SCENARIOS):
         acc_stats_rows.append({
             "scenario":  label,
             "semester":  sem + 1,
-            "median_k":  round(float(np.median(vals)), 3),
-            "p10_k":     round(float(np.percentile(vals, 10)), 3),
-            "p90_k":     round(float(np.percentile(vals, 90)), 3),
+            "median_k":  round(float(np.median(vals)), 1),
+            "p10_k":     round(float(np.percentile(vals, 10)), 1),
+            "p90_k":     round(float(np.percentile(vals, 90)), 1),
         })
 
 with open(RESULTS_DIR / "accumulation_stats.csv", "w", newline="") as f:
@@ -296,6 +296,51 @@ fig.savefig(FIGURES_DIR / "fig_pseudo.pdf", dpi=150)
 fig.savefig(FIGURES_DIR / "fig_pseudo.eps")
 plt.close(fig)
 print("Wrote figures/fig_pseudo.pdf  +  .eps")
+
+# ── multi-way sensitivity analysis ────────────────────────────────────────────
+# Jointly vary lambda, delta, and p_pass across [0.8, 1.0, 1.2] multipliers 
+# for the Large lecture scenario to test worst-case and best-case capacity.
+sensitivity_rows = []
+s_idx = 2  # Large lecture index in SCENARIOS
+label, N0, base_lam, base_delta, T = SCENARIOS[s_idx]
+base_pp = P_PASS[s_idx]
+
+multipliers = [0.8, 1.0, 1.2]
+rng_sens = np.random.default_rng(SEED)
+
+for m_lam in multipliers:
+    for m_delta in multipliers:
+        for m_pp in multipliers:
+            lam = base_lam * m_lam
+            delta = base_delta * m_delta
+            pp = min(1.0, base_pp * m_pp)
+            
+            reps_cum = np.zeros(R)
+            for rep in range(R):
+                cumulative = 0.0
+                for sem in range(SEMESTERS):
+                    sem_sessions = 0
+                    for week in range(1, T + 1):
+                        n_active = N0 * (1.0 - delta) ** week
+                        raw = rng_sens.poisson(lam * n_active)
+                        passed = rng_sens.binomial(raw, pp)
+                        sem_sessions += passed
+                    cumulative += sem_sessions
+                reps_cum[rep] = cumulative
+                
+            med_k = float(np.median(reps_cum)) / 1000.0
+            sensitivity_rows.append({
+                "lam_mult": m_lam,
+                "delta_mult": m_delta,
+                "pp_mult": m_pp,
+                "median_k": round(med_k, 2)
+            })
+
+with open(RESULTS_DIR / "sensitivity_multiway.csv", "w", newline="") as f:
+    w = csv.DictWriter(f, fieldnames=["lam_mult", "delta_mult", "pp_mult", "median_k"])
+    w.writeheader()
+    w.writerows(sensitivity_rows)
+print("Wrote sensitivity_multiway.csv")
 
 print("\nAll artefacts written successfully.")
 print(f"  Simulation seed : {SEED}")
